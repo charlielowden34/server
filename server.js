@@ -3,23 +3,37 @@ const cors = require("cors");
 const fetch = require("node-fetch");
 
 const app = express();
-app.use(cors());
+
+// ✅ Allow only your GitHub Pages site
+const allowedOrigins = ["https://charlielowden34.github.io"]; // Replace USERNAME with your GitHub username
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed"));
+    }
+  }
+}));
+
 app.use(express.json());
 
 app.post("/submit", async (req, res) => {
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxax5t_NZCxo2ngwEoK2wTL4M0PVl7bC6IX1bys1kFHaHRjVSIAPOipepbUajYPJuSH/exec"; // your real script URL
+  const scriptURL = "https://script.google.com/macros/s/AKfycbx.../exec"; // Replace with actual URL
   try {
-    const result = await fetch(scriptURL, {
+    const response = await fetch(scriptURL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(req.body),
     });
-    const text = await result.text();
+    const text = await response.text();
     res.send(text);
-  } catch (err) {
+  } catch (error) {
+    console.error(error);
     res.status(500).send("Failed to submit details at this time. Please try again later.");
   }
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
