@@ -4,8 +4,7 @@ const fetch = require("node-fetch");
 
 const app = express();
 
-// ✅ Allow only your GitHub Pages site
-const allowedOrigins = ["https://charlielowden34.github.io"]; // Replace USERNAME with your GitHub username
+const allowedOrigins = ["https://charlielowden34.github.io"];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -20,7 +19,7 @@ app.use(cors({
 app.use(express.json());
 
 app.post("/submit", async (req, res) => {
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxax5t_NZCxo2ngwEoK2wTL4M0PVl7bC6IX1bys1kFHaHRjVSIAPOipepbUajYPJuSH/exec"; // Replace with actual URL
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxax5t_NZCxo2ngwEoK2wTL4M0PVl7bC6IX1bys1kFHaHRjVSIAPOipepbUajYPJuSH/exec";
   try {
     const response = await fetch(scriptURL, {
       method: "POST",
